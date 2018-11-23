@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login form</title>
+  <script src="https://unpkg.com/lodash@4.16.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+
+
+</head>
+<body>
+
+<div id="loginForm">
+  <input type="text" :value="email" v-model="email" @input="checkEmail" >
+  <input :type="passwordType" :value="passwords" v-model="passwords" id="passwords">
+  <button @click="changeTypePasswords">show passwords</button>
+  <ul>
+    <li v-for="noti in notify"> {{ noti }}</li>
+  </ul>
+  <p>{{ login }}</p>
+  <button @click="auth">Login</button>
+</div>
+
+</body>
+
+<script type="text/javascript">
+  new Vue ({
+    el: "#loginForm",
+    data: {
+      email: '',
+      passwords: '',
+      notify: [],
+      isTyping: false,
+      passwordType: 'password',
+      isVisiblePasswords: false,
+      isLogin: '',
+    },
+    computed: {
+      login () {
+        if (this.isLogin) {
+          return this.notify = ['Login sucessfully']
+        }else {
+          return this.notify = ['Email or passwords not found']
+        }
+      }
+    },
+    methods: {
+      auth (){
+        if (this.email != 'admin@gmail.com' || this.passwords != 'admin' ) {
+          this.isLogin = false
+        }else {
+          this.isLogin = true
+        }
+      },
+      changeTypePasswords: function(){
+        return this.passwordType = (this.passwordType === 'text' ) ? 'password' : 'text'
+      },
+      checkEmail: _.debounce(function(){
+        this.notify = []
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        isValid = re.test(this.email)
+        if (!isValid){
+          return this.notify.push('Email error')
+        }else {
+          return this.notify.push('Email is valid')
+        }
+      }, 500)
+    }
+  })
+</script>
+</html>

@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
-  <title>Document</title>
+  <title>Login</title>
+  <script src="https://unpkg.com/lodash@4.16.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+
   <style>
     body {
     font-family: Helvetica Neue, Arial, sans-serif;
@@ -74,7 +77,7 @@
 <script type="text/x-template" id="grid-template">
   <table>
     <thead>
-      <tr>
+      <tr :class={ toggleClass }>
         <th v-for="key in columns"
           @click="sortBy(key)"
           :class="{ active: sortKey == key }">
@@ -128,6 +131,9 @@ Vue.component('demo-grid', {
     }
   },
   computed: {
+    toggleClass: function (key){
+      alert ("kiss")
+    },
     filteredData: function () {
       var sortKey = this.sortKey
       var filterKey = this.filterKey && this.filterKey.toLowerCase()
