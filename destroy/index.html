@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@2.5.16/dist/vue.min.js"></script>
+</head>
+<body>
+
+  <div id="app">
+    {{ value }}
+    <input v-model="value" />
+    <div id="mount-point"></div>
+    <input v-model="input"/>
+    <p>{{ input }}</p>
+    <button @click="destroy()">Destroy</button>
+  </div>
+
+</body>
+<script type="text/javascript">
+  var vm = null;
+
+new Vue({
+  el: '#app',
+  data() {
+    return {
+      value: 'working',
+      input: ''
+    };
+  },
+  methods: {
+    destroy() {
+      this.$destroy();
+    }
+  },
+  beforeDestroy() {
+    console.log('Main Vue destroyed')
+    vm.$destroy();
+  }
+})
+
+var tmp = Vue.extend({
+  template: `
+  	<div>
+      <span>{{ value }}</span>
+      <input v-model="value" />
+    </div>
+  `,
+  data() {
+    return {
+      value: 'new'
+    };
+  },
+  created() {
+  	var self = this;
+  },
+  beforeDestroy() {
+    console.log('Mounted destroyed')
+  }
+});
+
+vm = new tmp().$mount('#mount-point');
+
+
+</script>
+</html>
