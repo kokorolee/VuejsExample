@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Watcher Vue.js - allaravel.com</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container" id="app">
+        <input class="form-control" type="text" @input="isTyping = true" v-model="searchQuery">
+        <input class="form-control" type="text" @input="isTyping = true" v-model="searchQuery2">
+        <p v-if="isTyping">Đang tìm kiếm...</p>
+        <div v-else>
+            <ul class="list-group">
+                <li class="list-group-item" v-for="result in results">{{ result }}</li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+
+    <script type="text/javascript">
+        new Vue({
+            el: '#app',
+            data: {
+                searchQuery: '',
+                searchQuery2: '',
+                results: [],
+                isTyping: false
+            },
+            watch: {
+              searchQuery: _.debounce(function (query) {
+                console.log(query);
+                    console.log('debounce call');
+                    this.results = ['Vue.js', 'React', 'Angular 2'];
+                    this.isSearching = false;
+                }, 1000),
+
+                searchQuery2: function(query) {
+                    console.log(query);
+                    var vm = this;
+                    setTimeout(function() {
+                        console.log('setTimeout call');
+                        vm.results = ['Vue.js', 'React', 'Angular 2'];
+                        vm.isTyping = false;
+                    }, 1000);
+                }
+              }
+        });
+    </script>
+</body>
+</html>
